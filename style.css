@@ -40,8 +40,25 @@ body {
     float: left;
 }
 
+#signInButton {
+    background-color: #e02626;
+    width: calc(calc(100% / 6) - 20px);
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+    float: left;
+}
+
 .navBarButton:hover {
     background-color: #0075a0;
+}
+
+#signInButton:hover {
+    background-color: #af1c1c;
 }
 
 #main {
