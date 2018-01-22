@@ -40,6 +40,16 @@ body {
     float: left;
 }
 
+#navBarMobile {
+    color: white;
+    text-decoration: none;
+    position: relative;
+    top: -40px;
+    margin: 10px;
+    font-size: 50px;
+    display: none;
+}
+
 #signInButton {
     background-color: #e02626;
     width: calc(calc(100% / 6) - 20px);
@@ -78,5 +88,13 @@ body {
     #logo {
         width: 80%;
         height: auto;
+    }
+
+    #navBarMobile {
+        display: unset;
+    }
+
+    .navBar {
+        display: none;
     }
 }
