@@ -41,13 +41,10 @@ body {
 }
 
 #navBarMobile {
-    color: white;
-    text-decoration: none;
-    position: relative;
-    top: -40px;
-    margin: 10px;
-    font-size: 50px;
+    width: 20%;
     display: none;
+    position: absolute;
+    top: 35px;
 }
 
 #signInButton {
@@ -87,6 +84,9 @@ body {
 
     #logo {
         width: 80%;
+        position: relative;
+        left: 20%;
+
         height: auto;
     }
 
