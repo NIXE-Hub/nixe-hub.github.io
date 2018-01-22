@@ -68,6 +68,34 @@ body {
     background-color: #af1c1c;
 }
 
+.navBarFromMenu {
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.navBarFromMenu:hover {
+    background-color: #c0c0c0;
+}
+
+#signInFromMenu {
+    background-color: #e02626;
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+}
+
+#signInFromMenu:hover {
+    background-color: #af1c1c;
+}
+
 #main {
     background-color: white;
     -webkit-border-radius: 10px;
@@ -94,7 +122,7 @@ body {
         display: unset;
     }
 
-    .navBar {
+    #navBar {
         display: none;
     }
 }
