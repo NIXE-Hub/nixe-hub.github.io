@@ -2435,6 +2435,7 @@
                 try { document.getElementsByClassName("firebaseui-id-password-error")[0].innerHTML = document.getElementsByClassName("firebaseui-id-password-error")[0].innerHTML.replace("The email and password you entered don't match", "The e-mail or password is incorrect."); } catch(err) {}
                 try { document.getElementsByClassName("firebaseui-tos")[0].innerHTML = document.getElementsByClassName("firebaseui-tos")[0].innerHTML.replace('By tapping SAVE, you are indicating that you agree to the <a href="terms.html" class="firebaseui-link" target="_blank">Terms of Service</a>', 'By pressing Save, you are indicating that you agree to the <a href="terms.html" class="firebaseui-link" target="_blank">Terms Of Service</a>'); } catch(err) {}
                 try { getElementByAttribute("for", "email", document.body).innerHTML = "E-mail"; } catch(err) {}
+                try { getElementByAttribute("for", "name", document.body).innerHTML = "Username"; } catch(err) {}
                 try {  
                     if( document.getElementsByClassName("firebaseui-info-bar")[0].innerHTML == `<p class="firebaseui-info-bar-message">That email address doesn't match an existing account&nbsp;&nbsp;<a href="javascript:void(0)" class="firebaseui-link firebaseui-id-dismiss-info-bar">Dismiss</a></p>` ) {}
                 } catch(err) {}
