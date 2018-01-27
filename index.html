@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Hello, world! -->
         <title>NIXE Hub</title>
         <script type="text/javascript" src="script.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
@@ -40,5 +39,26 @@
         <div id="main">
             In development!
         </div>
+		<script>  
+            var currentUid = null;  
+            firebase.auth().onAuthStateChanged(function(user) {  
+            if (user && user.uid != currentUid) {  
+                currentUid = user.uid; 
+                document.getElementById("signInButton").innerHTML = "Sign Out";
+                document.getElementById("signInButton").onclick = "signOut();";
+            } else {  
+                currentUid = null;  
+                console.log("no user signed in");  
+            }
+
+            function signOut() {
+                firebase.auth().signOut().then(function() {
+                    console.log('Signed Out');
+                    window.location.href = "#";
+                }, function(error) {
+                    console.error('Sign Out Error', error);
+                });
+            }
+		</script>
     </body>
 </html>
