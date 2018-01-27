@@ -34,7 +34,7 @@
             <a href="videos.html" class="navBarLink"><div class="navBarButton">Videos</div></a>
             <a href="about.html" class="navBarLink"><div class="navBarButton">About</div></a>
             <a href="more.html" class="navBarLink"><div class="navBarButton">More</div></a>
-            <a href="signin.html" class="navBarLink"><div id="signInButton">Sign In</div></a>
+            <a href="signin.html" class="navBarLink" id="signInLinker"><div id="signInButton">Sign In</div></a>
         </div>
         <div id="main">
             In development!
@@ -44,18 +44,18 @@
             firebase.auth().onAuthStateChanged(function(user) {  
                 if (user && user.uid != currentUid) {  
                     currentUid = user.uid; 
-                    document.getElementById("signInButton").innerHTML = "Sign Out";
-                    document.getElementById("signInButton").onclick = "signOut();";
+                    document.getElementById("signInButton").innerHTML = "Exit";
+                    document.getElementById("signInLinker").href = "javascript:signOut();";
                 } else {  
                     currentUid = null;  
-                    console.log("no user signed in");  
+                    document.getElementById("signInButton").innerHTML = "Sign In";
+                    document.getElementById("signInLinker").href = "signin.html";
                 }
             });
 
             function signOut() {
                 firebase.auth().signOut().then(function() {
-                    console.log('Signed Out');
-                    window.location.href = "#";
+                    window.location.href = "index.html";
                 }, function(error) {
                     console.error('Sign Out Error', error);
                 });
