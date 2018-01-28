@@ -97,7 +97,7 @@
                 } else {
                     firebase.database().ref('users/' + currentUid).set({
                         accountPic: document.getElementById("accpic").value,
-                        bio: document.getElementById("bio").value,
+                        bio: document.getElementById("bio").value.replace(/\\n/g, "<br>"),
                         username: username,
                         updated: 0
                     });
