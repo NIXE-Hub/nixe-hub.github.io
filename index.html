@@ -46,6 +46,18 @@
                     currentUid = user.uid; 
                     document.getElementById("signInButton").innerHTML = "Exit";
                     document.getElementById("signInLinker").href = "javascript:signOut();";
+
+                    firebase.database().ref('/users/' + currentUid + "/updated").once('value').then(function(snapshot) {
+                        var firstTime = snapshot.val();
+                        if (firstTime == null) {
+                            var redirection = getParameterByName("goto");
+                            if (redirection == null) {
+                                redirection = "firsttime.html"
+                            } else {
+                                redirection = "firsttime.html?goto=" + redirection;
+                            }
+                        }
+                    });
                 } else {  
                     currentUid = null;  
                     document.getElementById("signInButton").innerHTML = "Sign In";
