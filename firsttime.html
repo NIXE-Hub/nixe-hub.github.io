@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NIXE Hub</title>
+        <script type="text/javascript" src="script.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+        <link rel="manifest" href="favicons/manifest.json">
+        <link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#2b5797">
+        <meta name="apple-mobile-web-app-title" content="NIXE Hub">
+        <meta name="application-name" content="NIXE Hub">
+        <meta name="theme-color" content="#ffffff">
+        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+        <script>
+            var config = {
+                apiKey: "AIzaSyCAg4asZeVdLhV2l3H8UuSndFlnEcFdDFM",
+                authDomain: "nixe-hub.firebaseapp.com",
+                databaseURL: "https://nixe-hub.firebaseio.com",
+                projectId: "nixe-hub",
+                storageBucket: "",
+                messagingSenderId: "107232022114"
+            };
+            firebase.initializeApp(config);
+        </script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    </head>
+    <body>
+        <img src="logo.png" id="logo" /><br>
+        <div id="main">
+            <h1>Set Up Your Account</h1>
+            <h2>Link to account picture:</h2>
+            <input class="big long" id="accpic"></input>
+            We suggest using <a href="http://imageshack.com/" target="_blank">ImageShack</a> to upload your image. And yes, it can be a <a href="http://l.wigflip.com/kq0TsXcM/signbot.gif" target="_blank">GIF</a>!
+            <h2>Description of yourself:</h2>
+            <textarea class="big long" id="bio"></textarea>
+            You can use all sorts of HTML code in here, but you won't be able to change NIXE Hub's appearance.
+            <h2>Social (optional):</h2>
+            Scratch link:
+            <input class="big long" id="scratch" placeholder="https://scratch.mit.edu/users/yourscratchusername/"></input>
+            YouTube channel link:
+            <input class="big long" id="yt" placeholder="https://youtube.com/user/yourytchannelname/"></input>
+            GitHub channel link:
+            <input class="big long" id="github" placeholder="https://github.com/yourgithubname/"></input><br>
+            Main website link:
+            <input class="big long" id="web" placeholder="http://yourwebsite.com/"></input><br>
+            <button onclick="finishSetup();">Finish</button> <span id="errmsg" style="color: red;"></span>
+        </div>
+		<script>  
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+
+            // Get a reference to the database service
+            var database = firebase.database();
+
+            var currentUid = null;  
+            var username = "";
+            firebase.auth().onAuthStateChanged(function(user) {  
+                if (user && user.uid != currentUid) {  
+                    currentUid = user.uid;
+                    username = user.displayName;
+
+                    var redirection = getParameterByName("goto");
+                    if (redirection == null) redirection = "index.html";
+                } else {  
+                    currentUid = null;  
+                    var redirection = getParameterByName("goto");
+                    if (redirection == null) {
+                        redirection = "signin.html"
+                    } else {
+                        redirection = "signin.html?goto=" + redirection;
+                    }
+
+                    window.location.href = redirection;
+                }
+            });
+
+            function signOut() {
+                firebase.auth().signOut().then(function() {
+                    window.location.href = "index.html";
+                }, function(error) {
+                    console.error('Sign Out Error', error);
+                });
+            }
+
+            function finishSetup() {
+                if (document.getElementById("accpic").value == "" && document.getElementById("bio").value == "") {
+                    document.getElementById("errmsg").innerHTML = "You must include an account picture and a bio.";
+                } else {
+                    firebase.database().ref('users/' + currentUid).set({
+                        accountPic: document.getElementById("accpic").value,
+                        bio: document.getElementById("bio").value,
+                        username: username,
+                        updated: 0
+                    });
+
+                    firebase.database().ref('users/' + currentUid + "/social").set({
+                        scratch: document.getElementById("scratch").value,
+                        yt: document.getElementById("yt").value,
+                        github: document.getElementById("github").value,
+                        web: document.getElementById("web").value,
+                    });
+
+                    var redirection = getParameterByName("goto");
+                    if (redirection == null) redirection = "index.html";
+
+                    window.location.href = redirection;
+                }
+            }
+		</script>
+    </body>
+</html>
