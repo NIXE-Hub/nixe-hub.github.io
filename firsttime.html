@@ -37,6 +37,7 @@
             <textarea class="big long" id="bio"></textarea>
             You can use all sorts of HTML code in here, but you won't be able to change NIXE Hub's appearance.
             <h2>Social (optional):</h2>
+            <p>Leave any of these blank if you don't have the link.</p>
             Scratch link:
             <input class="big long" id="scratch" placeholder="https://scratch.mit.edu/users/yourscratchusername/"></input>
             YouTube channel link:
@@ -92,27 +93,31 @@
             }
 
             function finishSetup() {
-                if (document.getElementById("accpic").value == "" && document.getElementById("bio").value == "") {
+                if (document.getElementById("accpic").value == "" || document.getElementById("bio").value == "") {
                     document.getElementById("errmsg").innerHTML = "You must include an account picture and a bio.";
                 } else {
-                    firebase.database().ref('users/' + currentUid).set({
-                        accountPic: document.getElementById("accpic").value,
-                        bio: document.getElementById("bio").value.replace(/\\n/g, "<br>"),
-                        username: username,
-                        updated: 0
-                    });
+                    if (document.getElementById("accpic").value.startsWith("http://") || document.getElementById("accpic").value.startsWith("https://") || document.getElementById("accpic").value.startsWith("//")) {
+                        firebase.database().ref('users/' + currentUid).set({
+                            accountPic: document.getElementById("accpic").value,
+                            bio: document.getElementById("bio").value.replace(/\\n/g, "<br>"),
+                            username: username,
+                            updated: 0
+                        });
 
-                    firebase.database().ref('users/' + currentUid + "/social").set({
-                        scratch: document.getElementById("scratch").value,
-                        yt: document.getElementById("yt").value,
-                        github: document.getElementById("github").value,
-                        web: document.getElementById("web").value,
-                    });
+                        firebase.database().ref('users/' + currentUid + "/social").set({
+                            scratch: document.getElementById("scratch").value,
+                            yt: document.getElementById("yt").value,
+                            github: document.getElementById("github").value,
+                            web: document.getElementById("web").value,
+                        });
 
-                    var redirection = getParameterByName("goto");
-                    if (redirection == null) redirection = "index.html";
+                        var redirection = getParameterByName("goto");
+                        if (redirection == null) redirection = "index.html";
 
-                    window.location.href = redirection;
+                        window.location.href = redirection;
+                    } else {
+                        document.getElementById("errmsg").innerHTML = "That doesn't look like a proper link for your account picture. Please make sure that you have the 'http://' bit at the start of it!";
+                    }
                 }
             }
 		</script>
