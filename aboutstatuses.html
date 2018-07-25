@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>NIXE Hub</title>
+        <title>NIXE Hub About</title>
         <script type="text/javascript" src="script.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
@@ -36,11 +36,19 @@
             <a href="more.html" class="navBarLink"><div class="navBarButton">More</div></a>
             <a href="signin.html" class="navBarLink" id="signInLinker"><div id="signInButton">Sign In</div></a>
         </div>
-        <div id="main" class="center">
-            <h1>That's all we can show you!</h1>
-            <p>We're still thinking about new exciting features.</p>
-            <p>Bored? Visit the <a href="https://scratch.mit.edu/users/NIXE_Hub" target="_blank">Lift Sims and other cool games</a>!</p>
-            <p>You could also contribute on <a href="https://github.com/NIXE-Hub/nixe-hub.github.io" target="_blank">GitHub</a> too!</p>
+        <div id="main">
+            <h1>About NIXE Hub Statuses</h1>
+            <p>Statuses are tags attributed to a NIXE Hub member that can only be altered by an admin or an owner. Many of the statuses are designed to bring trust to the community, and to stop impersonators.</p>
+            <p>Many of the statuses are listed below:</p>
+            <ul>
+                <li><strong>Member</strong>: The default status given to members when they first sign up.</li>
+                <li><strong>Trusted Member</strong>: The status given to members who are very active in the community.</li>
+                <li><strong>YouTuber</strong>: The status given to members who have good quality content on their YouTube channel.</li>
+                <li><strong>Collaborator</strong>: The status given to members who help on the <a href="https://github.com/NIXE-Hub/nixe-hub.github.io" target="_blank">GitHub repository</a> for NIXE Hub.</li>
+                <li><strong>Moderator</strong>: The status given to the Forum and LiftLogger moderators.</li>
+                <li><strong>Admin</strong>: The status given to admins who keep NIXE Hub running.</li>
+                <li><strong>Owner</strong>: The status given to the NIXE Hub owner, <a href="index.html?user=31ekslkoFMck9s0J8VLpa3dyzfS2">NIXE</a>.</li>
+            </ul>
         </div>
 		<script>  
             function getParameterByName(name, url) {
@@ -114,7 +122,7 @@
                     currentUid = null;  
                     document.getElementById("signInButton").innerHTML = "Sign In";
                     document.getElementById("signInLinker").href = "signin.html";
-
+                    
                     for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
                         document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
                     }

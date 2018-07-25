@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>NIXE Hub Forum</title>
+        <title>NIXE Hub About</title>
         <script type="text/javascript" src="script.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
@@ -40,7 +40,8 @@
             <h1>About NIXE Hub</h1>
             <p>Welcome to NIXE Hub, a hub for all things lift (or <em>elevator</em> in the US) related! Made by NIXE (or James, as he's called), this hub will serve anyone who has a passion for lifts. Join now if you haven't already, we need you to be a good community member!</p>
             <h2>About NIXE himself</h2>
-            <p>NIXE has always loved lifts since a very early age, and created his <a href="https://scratch.mit.edu/users/NIXE_Hub" target="_blank">Scratch account</a> in January 2018.</p>
+            <p>NIXE (or James) has always loved lifts since a very early age, and had created his <a href="https://scratch.mit.edu/users/NIXE_Hub" target="_blank">Scratch account</a> in January 2018.</p>
+            <p>NIXE is now working on NIXE Hub to bring you the best features! If you would like to contact him about anything, please message on his <a href="https://scratch.mit.edu/users/NIXE_Hub" target="_blank">Scratch profile</a>, tell him on <a href="https://github.com/NIXE-Hub" target="_blank">GitHub</a>, or just send him an <a href="mailto:nixehub@gmail.com">e-mail</a>!</p>
         </div>
 		<script>  
             function getParameterByName(name, url) {
@@ -76,10 +77,52 @@
                             window.location.href = redirection;
                         }
                     });
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
+                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
+                    }
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedIn").length; i++) {
+                        document.getElementsByClassName("showSignedIn")[i].style.display = "unset";
+                    }
+
+                    firebase.database().ref("/users/" + currentUid).once("value").then(function(snapshot) {
+                        var username = snapshot.val().username;
+                        var accountPic = snapshot.val().accountPic;
+                        var bio = snapshot.val().bio;
+                        var social = snapshot.val().social;
+                        var status = snapshot.val().status;
+
+                        if (status === undefined) {status = "Member";}
+
+                        for (var i = 0; i < document.getElementsByClassName("username").length; i++) {
+                            document.getElementsByClassName("username")[i].innerHTML = username;
+                        }
+
+                        for (var i = 0; i < document.getElementsByClassName("accountPic").length; i++) {
+                            document.getElementsByClassName("accountPic")[i].src = accountPic;
+                        }
+
+                        for (var i = 0; i < document.getElementsByClassName("bio").length; i++) {
+                            document.getElementsByClassName("bio")[i].innerHTML = bio;
+                        }
+
+                        for (var i = 0; i < document.getElementsByClassName("status").length; i++) {
+                            document.getElementsByClassName("status")[i].innerHTML = status;
+                        }
+                    });
                 } else {  
                     currentUid = null;  
                     document.getElementById("signInButton").innerHTML = "Sign In";
                     document.getElementById("signInLinker").href = "signin.html";
+                    
+                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
+                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
+                    }
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedOut").length; i++) {
+                        document.getElementsByClassName("showSignedOut")[i].style.display = "unset";
+                    }
                 }
             });
 

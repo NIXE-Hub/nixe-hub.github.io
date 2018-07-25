@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>NIXE Hub Forum</title>
+        <title>NIXE Hub LiftLogger</title>
         <script type="text/javascript" src="script.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
@@ -75,10 +75,52 @@
                             window.location.href = redirection;
                         }
                     });
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
+                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
+                    }
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedIn").length; i++) {
+                        document.getElementsByClassName("showSignedIn")[i].style.display = "unset";
+                    }
+
+                    firebase.database().ref("/users/" + currentUid).once("value").then(function(snapshot) {
+                        var username = snapshot.val().username;
+                        var accountPic = snapshot.val().accountPic;
+                        var bio = snapshot.val().bio;
+                        var social = snapshot.val().social;
+                        var status = snapshot.val().status;
+
+                        if (status === undefined) {status = "Member";}
+
+                        for (var i = 0; i < document.getElementsByClassName("username").length; i++) {
+                            document.getElementsByClassName("username")[i].innerHTML = username;
+                        }
+
+                        for (var i = 0; i < document.getElementsByClassName("accountPic").length; i++) {
+                            document.getElementsByClassName("accountPic")[i].src = accountPic;
+                        }
+
+                        for (var i = 0; i < document.getElementsByClassName("bio").length; i++) {
+                            document.getElementsByClassName("bio")[i].innerHTML = bio;
+                        }
+
+                        for (var i = 0; i < document.getElementsByClassName("status").length; i++) {
+                            document.getElementsByClassName("status")[i].innerHTML = status;
+                        }
+                    });
                 } else {  
                     currentUid = null;  
                     document.getElementById("signInButton").innerHTML = "Sign In";
                     document.getElementById("signInLinker").href = "signin.html";
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
+                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
+                    }
+
+                    for (var i = 0; i < document.getElementsByClassName("showSignedOut").length; i++) {
+                        document.getElementsByClassName("showSignedOut")[i].style.display = "unset";
+                    }
                 }
             });
 

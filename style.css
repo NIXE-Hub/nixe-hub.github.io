@@ -108,6 +108,18 @@ body {
     text-align: center;
 }
 
+.showSignedLoading {
+    display: unset;
+}
+
+.showSignedIn {
+    display: none;
+}
+
+.showSignedOut {
+    display: none;
+}
+
 input {
     font-family: "Roboto", Helvetica, Arial, sans-serif;
     border: none;
@@ -169,6 +181,51 @@ textarea.long {
     width: calc(100% - 40px);
 }
 
+.award {
+    width: calc(100% - 10px);
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.accountPicSize {
+    width: 64px;
+    height: 64px;
+}
+
+.accountDataHeader {
+    display: inline-block;
+    height: 64px;
+    margin-left: 10px;
+}
+
+.usernameHeader {
+    margin-bottom: 0;
+}
+
+.accountDataMain {
+    margin-top: 10px;
+}
+
+#accountAwards {
+    float: left;
+    width: calc(25% - 40px);
+    height: calc(200px - 20px);
+    overflow-y: auto;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#bioFrame {
+    width: calc(75% + 10px);
+    height: 200px;
+    border: none;
+    margin-left: 10px;
+}
+
 a {
     color: #00b0f0;
 }
@@ -193,5 +250,16 @@ a {
 
     #navBar {
         display: none;
+    }
+
+    #accountAwards {
+        float: unset;
+        width: calc(100% - 20px);
+        height: unset;
+        overflow-y: unset;
+    }
+
+    #bioFrame {
+        width: 100%;
     }
 }
