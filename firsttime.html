@@ -97,12 +97,10 @@
                     document.getElementById("errmsg").innerHTML = "You must include an account picture and a bio.";
                 } else {
                     if (document.getElementById("accpic").value.startsWith("http://") || document.getElementById("accpic").value.startsWith("https://") || document.getElementById("accpic").value.startsWith("//")) {
-                        firebase.database().ref("users/" + currentUid).set({
-                            accountPic: document.getElementById("accpic").value,
-                            bio: document.getElementById("bio").value.replace(/\\n/g, "<br>"),
-                            username: username,
-                            updated: 0
-                        });
+                        firebase.database().ref("users/" + currentUid + "/accountPic").set(document.getElementById("accpic").value);
+                        firebase.database().ref("users/" + currentUid + "/bio").set(document.getElementById("bio").value.replace(/\\n/g, "<br>"));
+                        firebase.database().ref("users/" + currentUid + "/username").set(username);
+                        firebase.database().ref("users/" + currentUid + "/updated").set(0);
 
                         firebase.database().ref("users/" + currentUid + "/social").set({
                             scratch: document.getElementById("scratch").value,
