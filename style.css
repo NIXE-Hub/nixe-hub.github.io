@@ -104,6 +104,10 @@ body {
     padding: 10px;
 }
 
+.center {
+    text-align: center;
+}
+
 input {
     font-family: "Roboto", Helvetica, Arial, sans-serif;
     border: none;

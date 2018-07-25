@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NIXE Hub Forum</title>
+        <script type="text/javascript" src="script.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+        <link rel="manifest" href="favicons/manifest.json">
+        <link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#2b5797">
+        <meta name="apple-mobile-web-app-title" content="NIXE Hub">
+        <meta name="application-name" content="NIXE Hub">
+        <meta name="theme-color" content="#ffffff">
+        <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+        <script>
+            var config = {
+                apiKey: "AIzaSyCAg4asZeVdLhV2l3H8UuSndFlnEcFdDFM",
+                authDomain: "nixe-hub.firebaseapp.com",
+                databaseURL: "https://nixe-hub.firebaseio.com",
+                projectId: "nixe-hub",
+                storageBucket: "",
+                messagingSenderId: "107232022114"
+            };
+            firebase.initializeApp(config);
+        </script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    </head>
+    <body>
+        <a href="menu.html"><img src="menu.png" id="navBarMobile" /></a><a href="index.html"><img src="logo.png" id="logo" /></a><br>
+        <div id="navBar">
+            <a href="index.html" class="navBarLink"><div class="navBarButton">Home</div></a>
+            <a href="forum.html" class="navBarLink"><div class="navBarButton">Forum</div></a>
+            <a href="liftlogger.html" class="navBarLink"><div class="navBarButton">LiftLogger</div></a>
+            <a href="about.html" class="navBarLink"><div class="navBarButton">About</div></a>
+            <a href="more.html" class="navBarLink"><div class="navBarButton">More</div></a>
+            <a href="signin.html" class="navBarLink" id="signInLinker"><div id="signInButton">Sign In</div></a>
+        </div>
+        <div id="main" class="center">
+            <h1>We're working on it!</h1>
+            <p>You'll have to check back soon as we're still working on the NIXE Hub LiftLogger.</p>
+            <p>You could also contribute on <a href="https://github.com/NIXE-Hub/nixe-hub.github.io" target="_blank">GitHub</a> too!</p>
+        </div>
+		<script>  
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+
+            // Get a reference to the database service
+            var database = firebase.database();
+
+            var currentUid = null;  
+            firebase.auth().onAuthStateChanged(function(user) {  
+                if (user && user.uid != currentUid) {  
+                    currentUid = user.uid; 
+                    document.getElementById("signInButton").innerHTML = "Exit";
+                    document.getElementById("signInLinker").href = "javascript:signOut();";
+
+                    firebase.database().ref('/users/' + currentUid + "/updated").once('value').then(function(snapshot) {
+                        var firstTime = snapshot.val();
+                        if (firstTime == null) {
+                            var redirection = getParameterByName("goto");
+                            if (redirection == null) {
+                                redirection = "firsttime.html"
+                            } else {
+                                redirection = "firsttime.html?goto=" + redirection;
+                            }
+
+                            window.location.href = redirection;
+                        }
+                    });
+                } else {  
+                    currentUid = null;  
+                    document.getElementById("signInButton").innerHTML = "Sign In";
+                    document.getElementById("signInLinker").href = "signin.html";
+                }
+            });
+
+            function signOut() {
+                firebase.auth().signOut().then(function() {
+                    window.location.href = "index.html";
+                }, function(error) {
+                    console.error('Sign Out Error', error);
+                });
+            }
+		</script>
+    </body>
+</html>
