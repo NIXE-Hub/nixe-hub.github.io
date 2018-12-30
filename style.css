@@ -197,6 +197,10 @@ textarea.long {
     margin-bottom: 5px;
 }
 
+.accountPic {
+    border-radius: 5px;
+}
+
 .accountPicSize {
     width: 64px;
     height: 64px;

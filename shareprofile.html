@@ -40,31 +40,13 @@
             <div class="showSignedLoading center">
                 <h1>Loading...</1>
             </div>
-            <div class="showSignedIn">
-                <img class="accountPic accountPicSize" src="loading-account.png" />
-                <div class="accountDataHeader">
-                    <h2 class="username usernameHeader">Loading...</h2>
-                    <span class="status" onclick="window.location.href='aboutstatuses.html'" style="cursor: pointer;">Loading...</span><br>
-                    <span class="awardnum">Loading...</span><br>
+            <div class="showSignedIn center">
+                <h1>Share Profile</h1>
+                <p>Your profile link:<br><a href="about:blank" target="_blank" id="shareProfileLink"></a></p>
+                <p>Note: If you visit this link when you're signed in, you'll be automatically redirected to your personal page instead of the profile viewer page.</p>
+                <div>
+                    <button onclick="window.location.href = 'index.html';">Go Back</button>
                 </div>
-                <div class="accountDataMain">
-                    <div id="accountAwards" class="awards">
-                        Loading...
-                    </div>
-                    <iframe id="bioFrame"></iframe>
-                    <div id="socials" class="socialBadgeHolder"></div>
-                </div>
-                <div class="right">
-                    <button onclick="window.location.href = 'shareprofile.html';">Share Profile</button>
-                    <button onclick="window.location.href = 'modprofile.html';">Edit Profile</button>
-                </div>
-            </div>
-            <div class="showSignedOut center">
-                <h1>Welcome to NIXE Hub!</h1>
-                <p>NIXE Hub is the place to collaborate with other people who like lifts (or <em>elevators</em> outside of the UK).</p>
-                <p>If you haven't already, come <a href="signin.html">join now</a>! We need you as part of our community! You'll get access to the best sources of information about lifts. And you'll get to chat to an open community.</p>
-                <p>Already signed up? Sign in below!</p>
-                <div><button onclick="window.location.href = 'signin.html';">Sign In</button></div>
             </div>
         </div>
 		<script>  
@@ -88,6 +70,11 @@
                     document.getElementById("signInButton").innerHTML = "Exit";
                     document.getElementById("signInLinker").href = "javascript:signOut();";
 
+                    document.getElementById("shareProfileLink").innerHTML = "https://nixe-hub.github.io/viewprofile.html?user=" + currentUid;
+                    document.getElementById("shareProfileLink").href = "https://nixe-hub.github.io/viewprofile.html?user=" + currentUid;
+
+                    firebase.auth().onAuthStateChanged(function(user) {  
+
                     firebase.database().ref('/users/' + currentUid + "/updated").once('value').then(function(snapshot) {
                         var firstTime = snapshot.val();
                         if (firstTime == null) {
@@ -102,58 +89,59 @@
                         }
                     });
 
-                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
-                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
-                    }
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedIn").length; i++) {
-                        document.getElementsByClassName("showSignedIn")[i].style.display = "unset";
-                    }
-
-                    firebase.database().ref("/users/" + currentUid).once("value").then(function(snapshot) {
-                        var username = snapshot.val().username;
-                        var accountPic = snapshot.val().accountPic;
-                        var bio = snapshot.val().bio;
-                        var social = snapshot.val().social;
-                        var status = snapshot.val().status;
-
-                        if (status === undefined) {status = "Member";}
-
-                        for (var i = 0; i < document.getElementsByClassName("username").length; i++) {
-                            document.getElementsByClassName("username")[i].innerHTML = username;
+                        for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
+                            document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
                         }
 
-                        for (var i = 0; i < document.getElementsByClassName("accountPic").length; i++) {
-                            document.getElementsByClassName("accountPic")[i].src = accountPic;
+                        for (var i = 0; i < document.getElementsByClassName("showSignedIn").length; i++) {
+                            document.getElementsByClassName("showSignedIn")[i].style.display = "unset";
                         }
 
-                        for (var i = 0; i < document.getElementsByClassName("bio").length; i++) {
-                            document.getElementsByClassName("bio")[i].innerHTML = bio;
-                        }
+                        firebase.database().ref("/users/" + currentUid).once("value").then(function(snapshot) {
+                            var username = snapshot.val().username;
+                            var accountPic = snapshot.val().accountPic;
+                            var bio = snapshot.val().bio;
+                            var social = snapshot.val().social;
+                            var status = snapshot.val().status;
 
-                        for (var i = 0; i < document.getElementsByClassName("status").length; i++) {
-                            document.getElementsByClassName("status")[i].innerHTML = status;
-                        }
+                            if (status === undefined) {status = "Member";}
 
-                             document.getElementById("bioFrame").src = "data:text/html;charset=utf-8,<style>* {font-family: 'Roboto', Helvetica, Arial, sans-serif;} a {color: #00b0f0;} button {width: 100px;font-family: 'Roboto', Helvetica, Arial, sans-serif;background-color: #00b0f0;color: white;border-radius: 10px;-webkit-border-radius: 10px;-moz-border-radius: 10px;-o-border-radius: 10px;border: none;padding: 10px;outline: none;}</style>" + bio;
+                            for (var i = 0; i < document.getElementsByClassName("username").length; i++) {
+                                document.getElementsByClassName("username")[i].innerHTML = username;
+                            }
 
-                        document.getElementById("socials").innerHTML = "";
+                            for (var i = 0; i < document.getElementsByClassName("accountPic").length; i++) {
+                                document.getElementsByClassName("accountPic")[i].src = accountPic;
+                            }
 
-                        if (social.scratch != null && social.scratch != "") {
-                            document.getElementById("socials").innerHTML += "<a href='" + social.scratch + "' target='blank' class='socialBadge scratch'>Scratch</a> "
-                        }
+                            for (var i = 0; i < document.getElementsByClassName("bio").length; i++) {
+                                document.getElementsByClassName("bio")[i].innerHTML = bio;
+                            }
 
-                        if (social.scratch != null && social.yt != "") {
-                            document.getElementById("socials").innerHTML += "<a href='" + social.yt + "' target='blank' class='socialBadge yt'>YouTube</a> "
-                        }
+                            for (var i = 0; i < document.getElementsByClassName("status").length; i++) {
+                                document.getElementsByClassName("status")[i].innerHTML = status;
+                            }
 
-                        if (social.scratch != null && social.github != "") {
-                            document.getElementById("socials").innerHTML += "<a href='" + social.github + "' target='blank' class='socialBadge github'>GitHub</a> "
-                        }
+                            document.getElementById("bioFrame").src = "data:text/html;charset=utf-8,<style>* {font-family: 'Roboto', Helvetica, Arial, sans-serif;} a {color: #00b0f0;} button {width: 100px;font-family: 'Roboto', Helvetica, Arial, sans-serif;background-color: #00b0f0;color: white;border-radius: 10px;-webkit-border-radius: 10px;-moz-border-radius: 10px;-o-border-radius: 10px;border: none;padding: 10px;outline: none;}</style>" + bio;
 
-                        if (social.scratch != null && social.web != "") {
-                            document.getElementById("socials").innerHTML += "<a href='" + social.web + "' target='blank' class='socialBadge web'>Website</a> "
-                        }
+                            document.getElementById("socials").innerHTML = "";
+
+                            if (social.scratch != null && social.scratch != "") {
+                                document.getElementById("socials").innerHTML += "<a href='" + social.scratch + "' target='blank' class='socialBadge scratch'>Scratch</a> "
+                            }
+
+                            if (social.scratch != null && social.yt != "") {
+                                document.getElementById("socials").innerHTML += "<a href='" + social.yt + "' target='blank' class='socialBadge yt'>YouTube</a> "
+                            }
+
+                            if (social.scratch != null && social.github != "") {
+                                document.getElementById("socials").innerHTML += "<a href='" + social.github + "' target='blank' class='socialBadge github'>GitHub</a> "
+                            }
+
+                            if (social.scratch != null && social.web != "") {
+                                document.getElementById("socials").innerHTML += "<a href='" + social.web + "' target='blank' class='socialBadge web'>Website</a> "
+                            }
+                        });
                     });
                 } else {  
                     currentUid = null;  
@@ -167,6 +155,8 @@
                     for (var i = 0; i < document.getElementsByClassName("showSignedOut").length; i++) {
                         document.getElementsByClassName("showSignedOut")[i].style.display = "unset";
                     }
+
+                    window.location.href = "index.html";
                 }
             });
 
