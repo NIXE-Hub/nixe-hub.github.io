@@ -104,8 +104,16 @@ body {
     padding: 10px;
 }
 
+.left {
+    text-align: left;
+}
+
 .center {
     text-align: center;
+}
+
+.right {
+    text-align: right;
 }
 
 .showSignedLoading {
@@ -228,6 +236,32 @@ textarea.long {
 
 a {
     color: #00b0f0;
+}
+
+.socialBadgeHolder {
+    padding: 5px;
+    padding-left: 0px;
+}
+
+a.socialBadge {
+    margin: 3px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #00b0f0;
+    color: white;
+    text-decoration: none;
+}
+
+a.socialBadge.scratch {
+    background-color: #ffab1a;
+}
+
+a.socialBadge.yt {
+    background-color: #ff4e45;
+}
+
+a.socialBadge.github {
+    background-color: #24292e;
 }
 
 @media (max-width: 800px) {
