@@ -12,6 +12,7 @@
         <meta name="apple-mobile-web-app-title" content="NIXE Hub">
         <meta name="application-name" content="NIXE Hub">
         <meta name="theme-color" content="#ffffff">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
         <script>
             var config = {
@@ -24,6 +25,7 @@
             };
             firebase.initializeApp(config);
         </script>
+        <script src="account.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     </head>
     <body>
@@ -48,76 +50,5 @@
             <input class="big long" id="web" placeholder="http://yourwebsite.com/"></input><br>
             <button onclick="finishSetup();">Finish</button> <span id="errmsg" style="color: red;"></span>
         </div>
-		<script>  
-            function getParameterByName(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[\]]/g, "\\$&");
-                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                    results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, " "));
-            }
-
-            // Get a reference to the database service
-            var database = firebase.database();
-
-            var currentUid = null;  
-            var username = "";
-            firebase.auth().onAuthStateChanged(function(user) {  
-                if (user && user.uid != currentUid) {  
-                    currentUid = user.uid;
-                    username = user.displayName;
-
-                    var redirection = getParameterByName("goto");
-                    if (redirection == null) redirection = "index.html";
-                } else {  
-                    currentUid = null;  
-                    var redirection = getParameterByName("goto");
-                    if (redirection == null) {
-                        redirection = "signin.html"
-                    } else {
-                        redirection = "signin.html?goto=" + redirection;
-                    }
-
-                    window.location.href = redirection;
-                }
-            });
-
-            function signOut() {
-                firebase.auth().signOut().then(function() {
-                    window.location.href = "index.html";
-                }, function(error) {
-                    console.error('Sign Out Error', error);
-                });
-            }
-
-            function finishSetup() {
-                if (document.getElementById("accpic").value == "" || document.getElementById("bio").value == "") {
-                    document.getElementById("errmsg").innerHTML = "You must include an account picture and a bio.";
-                } else {
-                    if (document.getElementById("accpic").value.startsWith("http://") || document.getElementById("accpic").value.startsWith("https://") || document.getElementById("accpic").value.startsWith("//")) {
-                        firebase.database().ref("users/" + currentUid + "/accountPic").set(document.getElementById("accpic").value);
-                        firebase.database().ref("users/" + currentUid + "/bio").set(document.getElementById("bio").value.replace(/\\n/g, "<br>"));
-                        firebase.database().ref("users/" + currentUid + "/username").set(username);
-                        firebase.database().ref("users/" + currentUid + "/updated").set(0);
-
-                        firebase.database().ref("users/" + currentUid + "/social").set({
-                            scratch: document.getElementById("scratch").value,
-                            yt: document.getElementById("yt").value,
-                            github: document.getElementById("github").value,
-                            web: document.getElementById("web").value,
-                        });
-
-                        var redirection = getParameterByName("goto");
-                        if (redirection == null) redirection = "index.html";
-
-                        window.location.href = redirection;
-                    } else {
-                        document.getElementById("errmsg").innerHTML = "That doesn't look like a proper link for your account picture. Please make sure that you have the 'http://' bit at the start of it!";
-                    }
-                }
-            }
-		</script>
     </body>
 </html>

@@ -12,6 +12,7 @@
         <meta name="apple-mobile-web-app-title" content="NIXE Hub">
         <meta name="application-name" content="NIXE Hub">
         <meta name="theme-color" content="#ffffff">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
         <script>
             var config = {
@@ -24,6 +25,7 @@
             };
             firebase.initializeApp(config);
         </script>
+        <script src="account.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     </head>
     <body>
@@ -143,19 +145,7 @@
                             }
                         });
                     });
-                } else {  
-                    currentUid = null;  
-                    document.getElementById("signInButton").innerHTML = "Sign In";
-                    document.getElementById("signInLinker").href = "signin.html";
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
-                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
-                    }
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedOut").length; i++) {
-                        document.getElementsByClassName("showSignedOut")[i].style.display = "unset";
-                    }
-
+                } else {
                     window.location.href = "index.html";
                 }
             });

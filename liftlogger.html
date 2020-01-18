@@ -12,6 +12,7 @@
         <meta name="apple-mobile-web-app-title" content="NIXE Hub">
         <meta name="application-name" content="NIXE Hub">
         <meta name="theme-color" content="#ffffff">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
         <script>
             var config = {
@@ -24,6 +25,7 @@
             };
             firebase.initializeApp(config);
         </script>
+        <script src="account.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     </head>
     <body>
@@ -41,97 +43,6 @@
             <p>You'll have to check back soon as we're still working on the NIXE Hub LiftLogger.</p>
             <p>You could also contribute on <a href="https://github.com/NIXE-Hub/nixe-hub.github.io" target="_blank">GitHub</a> too!</p>
         </div>
-		<script>  
-            function getParameterByName(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[\]]/g, "\\$&");
-                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                    results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, " "));
-            }
-
-            // Get a reference to the database service
-            var database = firebase.database();
-
-            var currentUid = null;  
-            firebase.auth().onAuthStateChanged(function(user) {  
-                if (user && user.uid != currentUid) {  
-                    currentUid = user.uid; 
-                    document.getElementById("signInButton").innerHTML = "Exit";
-                    document.getElementById("signInLinker").href = "javascript:signOut();";
-
-                    firebase.database().ref('/users/' + currentUid + "/updated").once('value').then(function(snapshot) {
-                        var firstTime = snapshot.val();
-                        if (firstTime == null) {
-                            var redirection = getParameterByName("goto");
-                            if (redirection == null) {
-                                redirection = "firsttime.html"
-                            } else {
-                                redirection = "firsttime.html?goto=" + redirection;
-                            }
-
-                            window.location.href = redirection;
-                        }
-                    });
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
-                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
-                    }
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedIn").length; i++) {
-                        document.getElementsByClassName("showSignedIn")[i].style.display = "unset";
-                    }
-
-                    firebase.database().ref("/users/" + currentUid).once("value").then(function(snapshot) {
-                        var username = snapshot.val().username;
-                        var accountPic = snapshot.val().accountPic;
-                        var bio = snapshot.val().bio;
-                        var social = snapshot.val().social;
-                        var status = snapshot.val().status;
-
-                        if (status === undefined) {status = "Member";}
-
-                        for (var i = 0; i < document.getElementsByClassName("username").length; i++) {
-                            document.getElementsByClassName("username")[i].innerHTML = username;
-                        }
-
-                        for (var i = 0; i < document.getElementsByClassName("accountPic").length; i++) {
-                            document.getElementsByClassName("accountPic")[i].src = accountPic;
-                        }
-
-                        for (var i = 0; i < document.getElementsByClassName("bio").length; i++) {
-                            document.getElementsByClassName("bio")[i].innerHTML = bio;
-                        }
-
-                        for (var i = 0; i < document.getElementsByClassName("status").length; i++) {
-                            document.getElementsByClassName("status")[i].innerHTML = status;
-                        }
-                    });
-                } else {  
-                    currentUid = null;  
-                    document.getElementById("signInButton").innerHTML = "Sign In";
-                    document.getElementById("signInLinker").href = "signin.html";
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
-                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
-                    }
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedOut").length; i++) {
-                        document.getElementsByClassName("showSignedOut")[i].style.display = "unset";
-                    }
-                }
-            });
-
-            function signOut() {
-                firebase.auth().signOut().then(function() {
-                    window.location.href = "index.html";
-                }, function(error) {
-                    console.error('Sign Out Error', error);
-                });
-            }
-		</script>
     </body>
     <script src="awardmanager.js"></script>
 </html>

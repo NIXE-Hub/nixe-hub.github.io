@@ -12,6 +12,7 @@
         <meta name="apple-mobile-web-app-title" content="NIXE Hub">
         <meta name="application-name" content="NIXE Hub">
         <meta name="theme-color" content="#ffffff">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
         <script>
             var config = {
@@ -24,6 +25,8 @@
             };
             firebase.initializeApp(config);
         </script>
+        <script src="account.js"></script>
+        <script src="viewprofile.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     </head>
     <body>
@@ -41,130 +44,21 @@
                 <h1>Loading...</1>
             </div>
             <div>
-                <img class="accountPic accountPicSize" src="loading-account.png" />
+                <img class="accountPicView accountPicSize" src="loading-account.png" />
                 <div class="accountDataHeader">
-                    <h2 class="username usernameHeader">Loading...</h2>
-                    <span class="status" onclick="window.location.href='aboutstatuses.html'" style="cursor: pointer;">Loading...</span><br>
-                    <span class="awardnum">Loading...</span><br>
+                    <h2 class="usernameView usernameHeader">Loading...</h2>
+                    <span class="statusView" onclick="window.location.href='aboutstatuses.html'" style="cursor: pointer;">Loading...</span><br>
+                    <span class="awardnumView">Loading...</span><br>
                 </div>
                 <div class="accountDataMain">
                     <div id="accountAwards" class="awards">
                         Loading...
                     </div>
-                    <iframe id="bioFrame"></iframe>
-                    <div id="socials" class="socialBadgeHolder"></div>
+                    <iframe id="bioFrameView"></iframe>
+                    <div id="socialsView" class="socialBadgeHolder"></div>
                 </div>
             </div>
         </div>
-		<script>  
-            function getParameterByName(name, url) {
-                if (!url) url = window.location.href;
-                name = name.replace(/[\[\]]/g, "\\$&");
-                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                    results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, " "));
-            }
-
-            // Get a reference to the database service
-            var database = firebase.database();
-
-            var currentUid = null;
-            var thisUser = null;
-
-            if (getParameterByName("user") == null) {
-                window.location.href = "index.html";
-            } else {
-                thisUser = getParameterByName("user");
-            }
-
-            firebase.auth().onAuthStateChanged(function(user) {  
-                if (user && user.uid != currentUid) {  
-                    currentUid = user.uid; 
-                    document.getElementById("signInButton").innerHTML = "Exit";
-                    document.getElementById("signInLinker").href = "javascript:signOut();";
-
-                    if (currentUid == thisUser) {
-                        window.location.href = "index.html";
-                    }
-                } else {  
-                    currentUid = null;  
-                    document.getElementById("signInButton").innerHTML = "Sign In";
-                    document.getElementById("signInLinker").href = "signin.html";
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
-                        document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
-                    }
-
-                    for (var i = 0; i < document.getElementsByClassName("showSignedOut").length; i++) {
-                        document.getElementsByClassName("showSignedOut")[i].style.display = "unset";
-                    }
-                }
-            });
-
-            for (var i = 0; i < document.getElementsByClassName("showSignedLoading").length; i++) {
-                document.getElementsByClassName("showSignedLoading")[i].style.display = "none";
-            }
-
-            for (var i = 0; i < document.getElementsByClassName("showSignedIn").length; i++) {
-                document.getElementsByClassName("showSignedIn")[i].style.display = "unset";
-            }
-
-            firebase.database().ref("/users/" + thisUser).once("value").then(function(snapshot) {
-                var username = snapshot.val().username;
-                var accountPic = snapshot.val().accountPic;
-                var bio = snapshot.val().bio;
-                var social = snapshot.val().social;
-                var status = snapshot.val().status;
-
-                if (status === undefined) {status = "Member";}
-
-                for (var i = 0; i < document.getElementsByClassName("username").length; i++) {
-                    document.getElementsByClassName("username")[i].innerHTML = username;
-                }
-
-                for (var i = 0; i < document.getElementsByClassName("accountPic").length; i++) {
-                    document.getElementsByClassName("accountPic")[i].src = accountPic;
-                }
-
-                for (var i = 0; i < document.getElementsByClassName("bio").length; i++) {
-                    document.getElementsByClassName("bio")[i].innerHTML = bio;
-                }
-
-                for (var i = 0; i < document.getElementsByClassName("status").length; i++) {
-                    document.getElementsByClassName("status")[i].innerHTML = status;
-                }
-
-                document.getElementById("bioFrame").src = "data:text/html;charset=utf-8,<style>* {font-family: 'Roboto', Helvetica, Arial, sans-serif;} a {color: #00b0f0;} button {width: 100px;font-family: 'Roboto', Helvetica, Arial, sans-serif;background-color: #00b0f0;color: white;border-radius: 10px;-webkit-border-radius: 10px;-moz-border-radius: 10px;-o-border-radius: 10px;border: none;padding: 10px;outline: none;}</style>" + bio;
-
-                document.getElementById("socials").innerHTML = "";
-
-                if (social.scratch != null && social.scratch != "") {
-                    document.getElementById("socials").innerHTML += "<a href='" + social.scratch + "' target='blank' class='socialBadge scratch'>Scratch</a> "
-                }
-
-                if (social.scratch != null && social.yt != "") {
-                    document.getElementById("socials").innerHTML += "<a href='" + social.yt + "' target='blank' class='socialBadge yt'>YouTube</a> "
-                }
-
-                if (social.scratch != null && social.github != "") {
-                    document.getElementById("socials").innerHTML += "<a href='" + social.github + "' target='blank' class='socialBadge github'>GitHub</a> "
-                }
-
-                if (social.scratch != null && social.web != "") {
-                    document.getElementById("socials").innerHTML += "<a href='" + social.web + "' target='blank' class='socialBadge web'>Website</a> "
-                }
-            });
-
-            function signOut() {
-                firebase.auth().signOut().then(function() {
-                    window.location.href = "index.html";
-                }, function(error) {
-                    console.error('Sign Out Error', error);
-                });
-            }
-		</script>
     </body>
     <script src="awardmanager.js"></script>
 </html>

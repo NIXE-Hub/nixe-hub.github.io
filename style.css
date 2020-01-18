@@ -45,6 +45,8 @@ body {
     display: none;
     position: absolute;
     top: 35px;
+    padding: 16px;
+    box-sizing: border-box;
 }
 
 #signInButton {
@@ -197,7 +199,7 @@ textarea.long {
     margin-bottom: 5px;
 }
 
-.accountPic {
+.accountPic, .accountPicView {
     border-radius: 5px;
 }
 
@@ -209,6 +211,7 @@ textarea.long {
 .accountDataHeader {
     display: inline-block;
     height: 64px;
+    margin-top: -16px;
     margin-left: 10px;
 }
 
@@ -223,7 +226,7 @@ textarea.long {
 #accountAwards {
     float: left;
     width: calc(25% - 40px);
-    height: calc(200px - 20px);
+    height: calc(300px - 20px);
     overflow-y: auto;
     position: relative;
     background-color: rgba(0, 0, 0, 0.1);
@@ -231,9 +234,9 @@ textarea.long {
     border-radius: 10px;
 }
 
-#bioFrame {
+#bioFrame, #bioFrameView {
     width: calc(75% + 10px);
-    height: 200px;
+    height: 300px;
     border: none;
     margin-left: 10px;
 }
